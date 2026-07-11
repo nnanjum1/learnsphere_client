@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Manrope, Poppins } from "next/font/google";
 import "./globals.css";
+import Navbar from "./components/layout/Navbar";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -28,7 +29,9 @@ export default function RootLayout({
       lang="en"
       className={`${poppins.variable} ${manrope.variable}`}
     >
-      <body>{children}</body>
+      <body>
+        <Navbar />
+        {children}</body>
     </html>
   );
 }
