@@ -1,3 +1,4 @@
+import CTA from "./components/home/CTA";
 import FAQ from "./components/home/FAQ";
 import FeaturedCourses from "./components/home/FeaturedCourses";
 import Hero from "./components/home/Hero";
@@ -12,6 +13,7 @@ export default function Home() {
       <LearningPaths />
       <Statistics />
       <FAQ />
+      <CTA />
     </main>
   );
 }
