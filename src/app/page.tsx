@@ -1,6 +1,7 @@
 import FeaturedCourses from "./components/home/FeaturedCourses";
 import Hero from "./components/home/Hero";
 import LearningPaths from "./components/home/LearningPaths";
+import Statistics from "./components/home/Statistics";
 
 export default function Home() {
   return (
@@ -8,6 +9,7 @@ export default function Home() {
       <Hero />
       <FeaturedCourses />
       <LearningPaths />
+      <Statistics />
     </main>
   );
 }
