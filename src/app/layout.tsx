@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Manrope, Poppins } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/layout/Navbar";
+import Footer from "./components/layout/Footer";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -31,7 +32,9 @@ export default function RootLayout({
     >
       <body>
         <Navbar />
-        {children}</body>
+        {children}
+        <Footer />
+      </body>
     </html>
   );
 }

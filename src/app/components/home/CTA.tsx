@@ -24,7 +24,7 @@ const CTA = () => {
                     <div className="mt-10 flex flex-col justify-center gap-4 sm:flex-row">
                         <Link href="/courses">
                             <Button
-                                variant="outline"
+                                variant="secondary"
                                 className="border-white bg-white text-indigo-700 hover:bg-slate-100 hover:text-indigo-700"
                             >
                                 Explore Courses
@@ -34,7 +34,7 @@ const CTA = () => {
                         <Link href="/register">
                             <Button
                                 variant="outline"
-                                className="border-white text-white hover:bg-white hover:text-indigo-600"
+                                className="border-white text-white hover:bg-white hover:text-indigo-700"
                             >
                                 Join Free
                             </Button>
