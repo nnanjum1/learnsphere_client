@@ -1,0 +1,19 @@
+{
+    "badge": "🚀 Personalized Learning Paths",
+    "title": "Learn Today. Build Tomorrow.",
+    "description": "Discover category-based courses taught by expert instructors and follow structured learning paths to achieve your career goals.",
+    "stats": [
+        {
+            "value": "15K+",
+            "label": "Active Learners"
+        },
+        {
+            "value": "250+",
+            "label": "Courses"
+        },
+        {
+            "value": "35",
+            "label": "Learning Paths"
+        }
+    ]
+}

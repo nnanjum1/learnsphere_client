@@ -1,0 +1,86 @@
+[
+    {
+        "id": "1",
+        "slug": "react-fundamentals",
+        "title": "React Fundamentals",
+        "category": "Frontend",
+        "level": "Beginner",
+        "duration": "8 Weeks",
+        "price": 49,
+        "rating": 4.9,
+        "students": 1250,
+        "thumbnail": "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800",
+        "shortDescription": "Learn React from scratch by building real-world projects.",
+        "fullDescription": "Master React fundamentals including components, props, state, hooks, routing, and project architecture.",
+        "learningOutcomes": [
+            "Build React applications",
+            "Understand Hooks",
+            "Use React Router",
+            "Manage component state"
+        ],
+        "instructor": "Sarah Johnson"
+    },
+    {
+        "id": "2",
+        "slug": "nextjs-mastery",
+        "title": "Next.js Mastery",
+        "category": "Frontend",
+        "level": "Intermediate",
+        "duration": "10 Weeks",
+        "price": 79,
+        "rating": 4.8,
+        "students": 980,
+        "thumbnail": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800",
+        "shortDescription": "Build production-ready applications using Next.js.",
+        "fullDescription": "Learn App Router, Server Components, API Routes, Authentication, and Deployment.",
+        "learningOutcomes": [
+            "App Router",
+            "SSR & SSG",
+            "Authentication",
+            "Deployment"
+        ],
+        "instructor": "Michael Lee"
+    },
+    {
+        "id": "3",
+        "slug": "node-express-api",
+        "title": "Node.js & Express API",
+        "category": "Backend",
+        "level": "Intermediate",
+        "duration": "9 Weeks",
+        "price": 69,
+        "rating": 4.7,
+        "students": 870,
+        "thumbnail": "https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=800",
+        "shortDescription": "Build secure REST APIs with Node.js and Express.",
+        "fullDescription": "Create scalable APIs with authentication, MongoDB, JWT, validation, and deployment.",
+        "learningOutcomes": [
+            "REST API",
+            "JWT Authentication",
+            "MongoDB",
+            "Deployment"
+        ],
+        "instructor": "David Wilson"
+    },
+    {
+        "id": "4",
+        "slug": "typescript-complete-guide",
+        "title": "TypeScript Complete Guide",
+        "category": "Programming",
+        "level": "Beginner",
+        "duration": "6 Weeks",
+        "price": 39,
+        "rating": 4.9,
+        "students": 1450,
+        "thumbnail": "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=800",
+        "shortDescription": "Write safer JavaScript with TypeScript.",
+        "fullDescription": "Learn interfaces, types, generics, utility types, and real-world TypeScript patterns.",
+        "learningOutcomes": [
+            "Interfaces",
+            "Generics",
+            "Type Safety",
+            "Project Structure"
+        ],
+        "instructor": "Emma Brown"
+    }
+]

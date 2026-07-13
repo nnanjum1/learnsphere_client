@@ -1,0 +1,62 @@
+[
+    {
+        "id": "1",
+        "slug": "frontend",
+        "title": "Frontend Developer",
+        "description": "Master modern frontend development from HTML to Next.js.",
+        "totalCourses": 6,
+        "technologies": [
+            "HTML",
+            "CSS",
+            "JavaScript",
+            "React",
+            "Next.js",
+            "TypeScript"
+        ]
+    },
+    {
+        "id": "2",
+        "slug": "backend",
+        "title": "Backend Developer",
+        "description": "Learn server-side development and build scalable APIs.",
+        "totalCourses": 6,
+        "technologies": [
+            "Node.js",
+            "Express",
+            "MongoDB",
+            "JWT",
+            "REST API",
+            "Docker"
+        ]
+    },
+    {
+        "id": "3",
+        "slug": "ai",
+        "title": "AI & Machine Learning",
+        "description": "Start your AI journey with Python and Machine Learning.",
+        "totalCourses": 6,
+        "technologies": [
+            "Python",
+            "NumPy",
+            "Pandas",
+            "Scikit-learn",
+            "TensorFlow",
+            "Deep Learning"
+        ]
+    },
+    {
+        "id": "4",
+        "slug": "mobile",
+        "title": "Mobile App Developer",
+        "description": "Build Android and iOS apps using Flutter.",
+        "totalCourses": 6,
+        "technologies": [
+            "Dart",
+            "Flutter",
+            "Firebase",
+            "REST API",
+            "State Management",
+            "Deployment"
+        ]
+    }
+]

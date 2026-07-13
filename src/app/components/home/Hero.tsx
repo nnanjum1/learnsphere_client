@@ -14,16 +14,16 @@ const Hero = () => {
             <div className="absolute -bottom-40 right-0 h-96 w-96 rounded-full bg-teal-300/20 blur-3xl" />
             <Container>
                 <div className="relative z-10 grid items-center gap-16 py-16 lg:min-h-[calc(100vh-72px)] lg:grid-cols-2">
-                    {/* Left Side */}
+
 
                     <div>
-                        {/* Badge */}
+
 
                         <span className="inline-flex rounded-full border border-indigo-200 bg-indigo-50 px-4 py-2 text-sm font-semibold text-indigo-700">
                             🚀 Learn at your own pace
                         </span>
 
-                        {/* Heading */}
+
 
                         <h1 className="mt-6 text-4xl font-bold leading-tight text-slate-900 sm:text-5xl lg:text-6xl">
                             Learn Today.
@@ -31,7 +31,7 @@ const Hero = () => {
                             Build Tomorrow.
                         </h1>
 
-                        {/* Description */}
+
 
                         <p className="mt-6 max-w-xl text-lg leading-8 text-slate-600">
                             Discover high-quality courses, follow structured learning
@@ -39,7 +39,6 @@ const Hero = () => {
                             goals with LearnSphere.
                         </p>
 
-                        {/* Buttons */}
 
                         <div className="mt-8 flex flex-col gap-4 sm:flex-row">
                             <Link href="/courses">
@@ -55,7 +54,6 @@ const Hero = () => {
                             </Link>
                         </div>
 
-                        {/* Statistics */}
 
                         <div className="mt-12 grid grid-cols-3 gap-6">
                             <div>
@@ -90,7 +88,7 @@ const Hero = () => {
                         </div>
                     </div>
 
-                    {/* Right Side */}
+
 
                     <div className="relative">
                         <Image
