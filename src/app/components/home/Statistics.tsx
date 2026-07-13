@@ -1,15 +1,15 @@
 "use client";
 
 import {
-    Area,
-    AreaChart,
-    CartesianGrid,
     ResponsiveContainer,
+    BarChart,
+    Bar,
+    CartesianGrid,
     Tooltip,
     XAxis,
     YAxis,
 } from "recharts";
-
+import { useEffect, useState } from "react";
 import Container from "../common/Container";
 import SectionTitle from "../common/SectionTitle";
 import StatCard from "../common/StatCard";
@@ -30,7 +30,19 @@ const icons = {
     success: <HiTrophy className="h-7 w-7" />,
 };
 
+
+
 const Statistics = () => {
+
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const check = () => setIsMobile(window.innerWidth < 640);
+        check();
+
+        window.addEventListener("resize", check);
+        return () => window.removeEventListener("resize", check);
+    }, []);
     return (
         <section className="py-20">
             <Container>
@@ -51,44 +63,42 @@ const Statistics = () => {
                         />
                     ))}
                 </div>
-
-                <div className="mt-16 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-                    <h3 className="mb-6 text-center text-2xl font-bold text-slate-900">
+                <div className="mt-16 rounded-3xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+                    <h3 className="mb-6 text-center text-xl font-bold text-slate-900 sm:text-2xl">
                         Student Growth
                     </h3>
 
-                    <div className="h-[350px]">
+                    <div className="h-[300px] w-full sm:h-[350px]">
                         <ResponsiveContainer width="100%" height="100%">
-                            <AreaChart data={growthData}>
-                                <defs>
-                                    <linearGradient
-                                        id="growth"
-                                        x1="0"
-                                        y1="0"
-                                        x2="0"
-                                        y2="1"
-                                    >
-                                        <stop offset="5%" stopColor="#4F46E5" stopOpacity={0.4} />
-                                        <stop offset="95%" stopColor="#4F46E5" stopOpacity={0.05} />
-                                    </linearGradient>
-                                </defs>
-
+                            <BarChart
+                                data={growthData}
+                                margin={{
+                                    top: 10,
+                                    right: 20,
+                                    left: 0,
+                                    bottom: 10,
+                                }}
+                            >
                                 <CartesianGrid strokeDasharray="3 3" />
 
-                                <XAxis dataKey="month" />
+                                <XAxis
+                                    dataKey="month"
+                                    interval={isMobile ? 1 : 0}
+                                />
 
-                                <YAxis />
+                                <YAxis
+                                    tick={{ fontSize: 12 }}
+                                    width={40}
+                                />
 
                                 <Tooltip />
 
-                                <Area
-                                    type="monotone"
+                                <Bar
                                     dataKey="students"
-                                    stroke="#4F46E5"
-                                    strokeWidth={3}
-                                    fill="url(#growth)"
+                                    fill="#4F46E5"
+                                    radius={[8, 8, 0, 0]}
                                 />
-                            </AreaChart>
+                            </BarChart>
                         </ResponsiveContainer>
                     </div>
                 </div>

@@ -23,11 +23,12 @@ const SectionTitle = ({
                 {title}
             </h2>
 
-            {description && (
-                <p className="mt-4 max-w-2xl text-slate-600">
-                    {description}
-                </p>
-            )}
+            <p
+                className={`mt-4 text-slate-600 leading-7 ${center ? "mx-auto max-w-2xl text-center" : "max-w-2xl"
+                    }`}
+            >
+                {description}
+            </p>
         </div>
     );
 };

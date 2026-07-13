@@ -1,3 +1,4 @@
+import FAQ from "./components/home/FAQ";
 import FeaturedCourses from "./components/home/FeaturedCourses";
 import Hero from "./components/home/Hero";
 import LearningPaths from "./components/home/LearningPaths";
@@ -10,6 +11,7 @@ export default function Home() {
       <FeaturedCourses />
       <LearningPaths />
       <Statistics />
+      <FAQ />
     </main>
   );
 }

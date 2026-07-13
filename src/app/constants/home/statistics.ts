@@ -31,4 +31,7 @@ export const growthData = [
     { month: "Jul", students: 9800 },
     { month: "Aug", students: 12300 },
     { month: "Sep", students: 15000 },
+    { month: "Oct", students: 9800 },
+    { month: "Nov", students: 12300 },
+    { month: "Dec", students: 15000 },
 ];
