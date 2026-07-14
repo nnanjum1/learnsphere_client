@@ -42,15 +42,18 @@ const Navbar = () => {
                         ))}
 
                         <div className="hidden lg:flex items-center gap-3">
-                            <Button variant="outline">
-                                Login
-                            </Button>
+                            <Link href="/login">
+                                <Button variant="outline">
+                                    Login
+                                </Button>
+                            </Link>
 
-                            <Button>
-                                Register
-                            </Button>
+                            <Link href="/register">
+                                <Button>
+                                    Register
+                                </Button>
+                            </Link>
                         </div>
-
 
                     </nav>
 
@@ -82,13 +85,26 @@ const Navbar = () => {
                                 </Link>
                             ))}
 
-                            <Button variant="outline">
-                                Login
-                            </Button>
+                            <Link
+                                href="/login"
+                                onClick={() => setIsOpen(false)}
+                            >
+                                <Button
+                                    variant="outline"
+                                    className="w-full"
+                                >
+                                    Login
+                                </Button>
+                            </Link>
 
-                            <Button>
-                                Register
-                            </Button>
+                            <Link
+                                href="/register"
+                                onClick={() => setIsOpen(false)}
+                            >
+                                <Button className="w-full">
+                                    Register
+                                </Button>
+                            </Link>
                         </div>
                     </Container>
                 </div>
