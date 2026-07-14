@@ -4,23 +4,24 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { getAllCourses } from "@/app/services/course.service";
 import { Course } from "@/app/types/course";
+import { useSearchParams } from "next/navigation";
 
 const ExploreCourses = () => {
     const [courses, setCourses] = useState<Course[]>([]);
     const [loading, setLoading] = useState(true);
+    const searchParams = useSearchParams();
 
-    // Instant input binding state (avoids focus loss)
     const [search, setSearch] = useState("");
-    // Debounced string state that actually triggers the API fetch call
     const [debouncedSearch, setDebouncedSearch] = useState("");
 
-    const [category, setCategory] = useState("");
-    const [level, setLevel] = useState("");
+    const [category, setCategory] =
+        useState(
+            searchParams.get("category") || ""
+        ); const [level, setLevel] = useState("");
     const [sort, setSort] = useState("newest");
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
 
-    // 1. Debounce logic handler: Waits 500ms after user stops typing before calling backend
     useEffect(() => {
         const handler = setTimeout(() => {
             setDebouncedSearch(search);
@@ -130,7 +131,6 @@ const ExploreCourses = () => {
                 </select>
             </div>
 
-            {/* DYNAMIC RESULTS CONTAINER */}
             {loading ? (
                 <div className="py-20 text-center text-lg text-slate-500">
                     Loading courses...

@@ -3,26 +3,29 @@
 import { useEffect, useState } from "react";
 
 import Container from "../common/Container";
-import LearningPathCard from "../common/LearningPathCard";
 import SectionTitle from "../common/SectionTitle";
+import Link from "next/link";
+import { getCourseCategories } from "@/app/services/course.service";
 
-import { getLearningPaths } from "@/app/services/learningPathService";
 import { LearningPath } from "@/app/types/learningPath";
 
 const LearningPaths = () => {
-    const [paths, setPaths] = useState<LearningPath[]>([]);
+    const [categories, setCategories] =
+        useState<string[]>([]);
 
     useEffect(() => {
-        const loadPaths = async () => {
+        const loadCategories = async () => {
             try {
-                const data = await getLearningPaths();
-                setPaths(data);
+                const data =
+                    await getCourseCategories();
+
+                setCategories(data);
             } catch (error) {
                 console.error(error);
             }
         };
 
-        loadPaths();
+        loadCategories();
     }, []);
 
     return (
@@ -36,12 +39,26 @@ const LearningPaths = () => {
                 />
 
                 <div className="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
-                    {paths.map((path) => (
-                        <LearningPathCard
-                            key={path.id}
-                            path={path}
-                        />
+
+                    {categories.map((category) => (
+
+                        <Link
+                            key={category}
+                            href={`/courses?category=${encodeURIComponent(category)}`}
+                            className="rounded-2xl border bg-white p-8 text-center shadow transition hover:-translate-y-1 hover:shadow-xl"
+                        >
+                            <h3 className="text-2xl font-bold">
+                                {category}
+                            </h3>
+
+                            <p className="mt-3 text-slate-500">
+                                Explore {category} courses
+                            </p>
+
+                        </Link>
+
                     ))}
+
                 </div>
             </Container>
         </section>

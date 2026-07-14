@@ -8,8 +8,8 @@ import Container from "../common/Container";
 import SectionTitle from "../common/SectionTitle";
 import Button from "../common/Button";
 
-import { getFeaturedCourses } from "@/app/services/courseService";
 import { Course } from "@/app/types/course";
+import { getFeaturedCourses } from "@/app/services/course.service";
 
 const FeaturedCourses = () => {
     const [courses, setCourses] = useState<Course[]>([]);
@@ -54,7 +54,7 @@ const FeaturedCourses = () => {
                         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
                             {courses.map((course) => (
                                 <CourseCard
-                                    key={course.id}
+                                    key={course._id}
                                     course={course}
                                 />
                             ))}

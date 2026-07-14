@@ -103,3 +103,30 @@ export const getAllCourses = async ({
     return res.json();
 };
 
+export const getFeaturedCourses = async () => {
+    const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/courses/featured`,
+        {
+            cache: "no-store",
+        }
+    );
+
+    const data = await res.json();
+
+    return data.courses;
+};
+
+export const getCourseCategories =
+    async () => {
+
+        const res = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/courses/categories`,
+            {
+                cache: "no-store",
+            }
+        );
+
+        const data = await res.json();
+
+        return data.categories;
+    };
