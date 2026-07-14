@@ -12,3 +12,16 @@ export const getInstructorDashboard = async (
 
     return res.json();
 };
+
+export const getStudentDashboard = async (
+    email: string
+) => {
+    const res = await fetch(
+        `${API}/dashboard/student/${email}`,
+        {
+            cache: "no-store",
+        }
+    );
+
+    return res.json();
+};

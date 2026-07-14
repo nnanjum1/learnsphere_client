@@ -2,6 +2,7 @@
 
 import { authClient } from "@/app/lib/auth-client";
 import InstructorDashboard from "@/app/components/dashboard/InstructorDashboard";
+import StudentDashboard from "../components/dashboard/StudentDashboard";
 
 export default function DashboardPage() {
     const { data: session } = authClient.useSession();
@@ -12,5 +13,5 @@ export default function DashboardPage() {
         return <InstructorDashboard />;
     }
 
-    return <div>Student Dashboard</div>;
+    return <StudentDashboard />;
 }
