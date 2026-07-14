@@ -1,28 +1,17 @@
-import { headers } from "next/headers";
-import { redirect } from "next/navigation";
-
-import { auth } from "@/app/lib/auth";
-
-const DashboardPage = async () => {
-    const session = await auth.api.getSession({
-        headers: await headers(),
-    });
-
-    if (!session) {
-        redirect("/login");
-    }
-
+const Dashboard = () => {
     return (
-        <main className="mx-auto max-w-7xl p-8">
-            <h1 className="text-3xl font-bold">
-                Welcome, {session.user.name}
-            </h1>
+        <div>
 
-            <p className="mt-2 text-slate-600">
-                You are logged in successfully.
+            <h2 className="text-3xl font-bold">
+                Dashboard
+            </h2>
+
+            <p className="mt-3 text-slate-600">
+                Welcome to LearnSphere Dashboard.
             </p>
-        </main>
+
+        </div>
     );
 };
 
-export default DashboardPage;
+export default Dashboard;
