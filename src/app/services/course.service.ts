@@ -102,3 +102,4 @@ export const getAllCourses = async ({
 
     return res.json();
 };
+
