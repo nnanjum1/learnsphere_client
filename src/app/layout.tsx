@@ -3,7 +3,8 @@ import { Manrope, Poppins } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
-
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const poppins = Poppins({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
@@ -33,6 +34,10 @@ export default function RootLayout({
       <body>
         <Navbar />
         {children}
+        <ToastContainer
+          position="top-right"
+          autoClose={3000}
+        />
         <Footer />
       </body>
     </html>

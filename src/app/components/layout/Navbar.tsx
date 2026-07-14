@@ -3,6 +3,9 @@
 import Link from "next/link";
 import { useState } from "react";
 import { HiOutlineBars3, HiOutlineXMark } from "react-icons/hi2";
+import { authClient } from "@/app/lib/auth-client";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 import Container from "../common/Container";
 import Button from "../common/Button";
@@ -10,6 +13,18 @@ import { publicNavLinks } from "@/app/constants/navigation";
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const router = useRouter();
+
+    const { data: session, isPending } = authClient.useSession();
+
+    const handleLogout = async () => {
+        await authClient.signOut();
+
+        toast.success("Logged out successfully!");
+
+        router.push("/");
+        router.refresh();
+    };
 
     return (
         <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/80 backdrop-blur-md">
@@ -42,17 +57,39 @@ const Navbar = () => {
                         ))}
 
                         <div className="hidden lg:flex items-center gap-3">
-                            <Link href="/login">
-                                <Button variant="outline">
-                                    Login
-                                </Button>
-                            </Link>
+                            {isPending ? (
+                                <p>Loading...</p>
+                            ) : session ? (
+                                <>
+                                    <span className="font-medium">
+                                        {session.user.name}
+                                    </span>
 
-                            <Link href="/register">
-                                <Button>
-                                    Register
-                                </Button>
-                            </Link>
+                                    <Link href="/dashboard">
+                                        <Button variant="outline">
+                                            Dashboard
+                                        </Button>
+                                    </Link>
+
+                                    <Button onClick={handleLogout}>
+                                        Logout
+                                    </Button>
+                                </>
+                            ) : (
+                                <>
+                                    <Link href="/login">
+                                        <Button variant="outline">
+                                            Login
+                                        </Button>
+                                    </Link>
+
+                                    <Link href="/register">
+                                        <Button>
+                                            Register
+                                        </Button>
+                                    </Link>
+                                </>
+                            )}
                         </div>
 
                     </nav>
@@ -85,26 +122,51 @@ const Navbar = () => {
                                 </Link>
                             ))}
 
-                            <Link
-                                href="/login"
-                                onClick={() => setIsOpen(false)}
-                            >
-                                <Button
-                                    variant="outline"
-                                    className="w-full"
-                                >
-                                    Login
-                                </Button>
-                            </Link>
+                            {session ? (
+                                <>
+                                    <Link
+                                        href="/dashboard"
+                                        onClick={() => setIsOpen(false)}
+                                    >
+                                        <Button
+                                            variant="outline"
+                                            className="w-full"
+                                        >
+                                            Dashboard
+                                        </Button>
+                                    </Link>
 
-                            <Link
-                                href="/register"
-                                onClick={() => setIsOpen(false)}
-                            >
-                                <Button className="w-full">
-                                    Register
-                                </Button>
-                            </Link>
+                                    <Button
+                                        className="w-full"
+                                        onClick={handleLogout}
+                                    >
+                                        Logout
+                                    </Button>
+                                </>
+                            ) : (
+                                <>
+                                    <Link
+                                        href="/login"
+                                        onClick={() => setIsOpen(false)}
+                                    >
+                                        <Button
+                                            variant="outline"
+                                            className="w-full"
+                                        >
+                                            Login
+                                        </Button>
+                                    </Link>
+
+                                    <Link
+                                        href="/register"
+                                        onClick={() => setIsOpen(false)}
+                                    >
+                                        <Button className="w-full">
+                                            Register
+                                        </Button>
+                                    </Link>
+                                </>
+                            )}
                         </div>
                     </Container>
                 </div>
