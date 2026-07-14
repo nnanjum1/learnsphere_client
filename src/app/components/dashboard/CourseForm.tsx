@@ -80,7 +80,7 @@ const CourseForm = ({
             instructorId: session.user.id,
             instructorName: session.user.name,
             instructorEmail: session.user.email,
-
+            enrollmentCount: 0,
             createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString(),
         };

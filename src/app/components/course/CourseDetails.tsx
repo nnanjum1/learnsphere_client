@@ -5,6 +5,7 @@ import Link from "next/link";
 import { authClient } from "@/app/lib/auth-client";
 import { Course } from "@/app/types/course";
 import { getCourseById } from "@/app/services/course.service";
+import { toast } from "react-toastify";
 
 interface CourseDetailsProps {
     id: string;
@@ -18,11 +19,31 @@ const CourseDetails = ({
 
     const [loading, setLoading] =
         useState(true);
-
+    const [isEnrolling, setIsEnrolling] = useState(false);
+    const [isEnrolled, setIsEnrolled] = useState(false);
     const { data: session } =
         authClient.useSession();
 
     const role = (session?.user as { role?: string })?.role;
+
+
+    // useEffect(() => {
+    //     if (!session?.user || role !== "student" || !course?._id) return;
+
+    //     const checkEnrollment = async () => {
+    //         const res = await fetch(
+    //             `${process.env.NEXT_PUBLIC_API_URL}/enrollments/check/${course._id}/${session.user.email}`
+    //         );
+
+    //         const result = await res.json();
+
+    //         if (result.enrolled) {
+    //             setIsEnrolled(true);
+    //         }
+    //     };
+
+    //     checkEnrollment();
+    // }, [course, session, role]);
 
     useEffect(() => {
         const loadCourse = async () => {
@@ -32,6 +53,8 @@ const CourseDetails = ({
 
                 if (result.success) {
                     setCourse(result.course);
+                    setIsEnrolled(true);
+
                 }
             } catch (error) {
                 console.error(error);
@@ -58,6 +81,54 @@ const CourseDetails = ({
             </div>
         );
     }
+
+    const handleEnroll = async () => {
+        if (!session?.user || !course || isEnrolling) return;
+
+        setIsEnrolling(true);
+
+        try {
+            const res = await fetch(
+                `${process.env.NEXT_PUBLIC_API_URL}/enrollments`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        courseId: course._id,
+                        studentId: session.user.id,
+                        studentName: session.user.name,
+                        studentEmail: session.user.email,
+                    }),
+                }
+            );
+
+            const result = await res.json();
+
+            if (result.success) {
+                setIsEnrolled(true);
+
+                setCourse((prev) =>
+                    prev
+                        ? {
+                            ...prev,
+                            enrollmentCount:
+                                prev.enrollmentCount + 1,
+                        }
+                        : prev
+                );
+
+                toast.success("Enrollment successful.");
+            } else {
+                toast.error(result.message);
+            }
+        } catch {
+            toast.error("Something went wrong.");
+        } finally {
+            setIsEnrolling(false);
+        }
+    };
 
     return (
         <section className="mx-auto max-w-6xl px-4 py-10">
@@ -90,7 +161,7 @@ const CourseDetails = ({
                     {course.shortDescription}
                 </p>
 
-                <div className="mt-6 grid gap-4 md:grid-cols-4">
+                <div className="mt-6 grid gap-4 md:grid-cols-5">
 
                     <div>
                         <h4 className="font-semibold">
@@ -123,6 +194,15 @@ const CourseDetails = ({
 
                         <p className="text-2xl font-bold text-indigo-600">
                             ${course.price}
+                        </p>
+                    </div>
+                    <div>
+                        <h4 className="font-semibold">
+                            Students
+                        </h4>
+
+                        <p className="text-lg font-semibold text-indigo-600">
+                            {course.enrollmentCount} Enrolled
                         </p>
                     </div>
 
@@ -187,14 +267,34 @@ const CourseDetails = ({
                 <div className="mt-12">
 
                     {!session?.user ? (
-                        <Link href="/login">
+                        <Link
+                            href="/login"
+                            className="inline-block rounded-xl bg-indigo-600 px-8 py-4 font-semibold text-white hover:bg-indigo-700"
+                        >
                             Login to Enroll
                         </Link>
                     ) : role === "student" ? (
-                        <button>Enroll Now</button>
+                        isEnrolled ? (
+                            <button
+                                disabled
+                                className="cursor-not-allowed rounded-xl bg-green-600 px-8 py-4 font-semibold text-white opacity-70"
+                            >
+                                ✓ Enrolled
+                            </button>
+
+                        ) : (
+                            <button
+                                onClick={handleEnroll}
+                                disabled={isEnrolling}
+                                className="rounded-xl bg-indigo-600 px-8 py-4 font-semibold text-white disabled:cursor-not-allowed disabled:opacity-60"
+                            >
+                                {isEnrolling ? "Enrolling..." : "Enroll Now"}
+                            </button>
+                        )
                     ) : (
-                        <p>You are viewing this course as an instructor.</p>
-                    )}
+                        <div className="rounded-xl bg-green-100 p-4 text-green-700">
+                            You are the instructor of this course.
+                        </div>)}
 
                 </div>
 

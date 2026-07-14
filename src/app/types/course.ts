@@ -23,7 +23,7 @@ export interface Course {
     instructorId: string;
     instructorName: string;
     instructorEmail: string;
-
+    enrollmentCount: number;
     createdAt?: string;
     updatedAt?: string;
 }
