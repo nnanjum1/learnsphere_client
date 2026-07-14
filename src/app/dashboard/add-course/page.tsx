@@ -1,7 +1,5 @@
-import AddCourseForm from "@/app/components/dashboard/AddCourseForm";
+import AddCourse from "@/app/components/dashboard/AddCourse";
 
-const AddCoursePage = () => {
-    return <AddCourseForm />;
-};
-
-export default AddCoursePage;
+export default function Page() {
+    return <AddCourse />;
+}

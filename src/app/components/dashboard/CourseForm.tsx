@@ -6,10 +6,22 @@ import { authClient } from "@/app/lib/auth-client";
 import { useRouter } from "next/navigation";
 
 import { Course, CourseFormData } from "@/app/types/course";
-import { createCourse } from "@/app/services/course.service";
+import {
+    createCourse,
+    updateCourse,
+} from "@/app/services/course.service";
 import { categories } from "@/app/constants/categories";
 
-const AddCourseForm = () => {
+interface CourseFormProps {
+    mode: "add" | "edit";
+    course?: Course;
+}
+
+const CourseForm = ({
+    mode,
+    course,
+}: CourseFormProps) => {
+
     const router = useRouter();
 
     const { data: session } = authClient.useSession();
@@ -18,7 +30,24 @@ const AddCourseForm = () => {
         register,
         handleSubmit,
         reset,
-    } = useForm<CourseFormData>();
+    } = useForm<CourseFormData>({
+        defaultValues: course
+            ? {
+                title: course.title,
+                thumbnail: course.thumbnail,
+                category: course.category,
+                level: course.level,
+                duration: course.duration,
+                price: course.price,
+                shortDescription: course.shortDescription,
+                description: course.description,
+                requirements:
+                    course.requirements.join("\n"),
+                learningOutcomes:
+                    course.learningOutcomes.join("\n"),
+            }
+            : undefined,
+    });
 
     const onSubmit = async (data: CourseFormData) => {
         if (!session?.user) {
@@ -26,7 +55,7 @@ const AddCourseForm = () => {
             return;
         }
 
-        const course: Course = {
+        const courseData: Course = {
             title: data.title,
             thumbnail: data.thumbnail,
             category: data.category,
@@ -56,7 +85,21 @@ const AddCourseForm = () => {
             updatedAt: new Date().toISOString(),
         };
 
-        const result = await createCourse(course);
+        let result;
+
+        if (mode === "add") {
+            result = await createCourse(courseData);
+        } else {
+            if (!course?._id) {
+                toast.error("Course ID not found.");
+                return;
+            }
+
+            result = await updateCourse(
+                course._id,
+                courseData
+            );
+        }
 
         if (result.success) {
             toast.success(result.message);
@@ -72,7 +115,9 @@ const AddCourseForm = () => {
     return (
         <div className="mx-auto max-w-4xl rounded-2xl bg-white p-8 shadow">
             <h2 className="mb-8 text-3xl font-bold">
-                Add New Course
+                {mode === "add"
+                    ? "Add New Course"
+                    : "Edit Course"}
             </h2>
 
             <form
@@ -163,11 +208,13 @@ const AddCourseForm = () => {
                 <button
                     className="rounded-xl bg-indigo-600 px-8 py-3 font-semibold text-white"
                 >
-                    Add Course
+                    {mode === "add"
+                        ? "Add Course"
+                        : "Update Course"}
                 </button>
             </form>
         </div>
     );
 };
 
-export default AddCourseForm;
+export default CourseForm;
