@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
@@ -46,19 +45,23 @@ const RegisterForm = () => {
                 name: data.name,
                 email: data.email,
                 password: data.password,
-            },
+                role: data.role,
+            } as any,
             {
+                onRequest: () => {
+                    setLoading(true);
+                },
                 onSuccess: () => {
+                    setLoading(false);
                     toast.success("Registration successful!");
                     router.push("/login");
                 },
                 onError: (ctx) => {
-                    toast.error(ctx.error.message);
+                    setLoading(false);
+                    toast.error(ctx.error.message || "Something went wrong.");
                 },
             }
         );
-        setLoading(false);
-
     };
 
     return (
@@ -74,12 +77,10 @@ const RegisterForm = () => {
                 className="space-y-5"
             >
                 {/* Name */}
-
                 <div>
                     <label className="mb-2 block font-medium">
                         Full Name
                     </label>
-
                     <input
                         {...register("name", {
                             required: "Name is required",
@@ -87,19 +88,16 @@ const RegisterForm = () => {
                         className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none focus:border-indigo-600"
                         placeholder="Enter your full name"
                     />
-
                     <p className="mt-1 text-sm text-red-500">
                         {errors.name?.message}
                     </p>
                 </div>
 
                 {/* Email */}
-
                 <div>
                     <label className="mb-2 block font-medium">
                         Email
                     </label>
-
                     <input
                         type="email"
                         {...register("email", {
@@ -108,19 +106,16 @@ const RegisterForm = () => {
                         className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none focus:border-indigo-600"
                         placeholder="Enter your email"
                     />
-
                     <p className="mt-1 text-sm text-red-500">
                         {errors.email?.message}
                     </p>
                 </div>
 
                 {/* Password */}
-
                 <div>
                     <label className="mb-2 block font-medium">
                         Password
                     </label>
-
                     <div className="relative">
                         <input
                             type={showPassword ? "text" : "password"}
@@ -128,47 +123,32 @@ const RegisterForm = () => {
                                 required: "Password is required",
                                 minLength: {
                                     value: 6,
-                                    message:
-                                        "Minimum 6 characters",
+                                    message: "Minimum 6 characters",
                                 },
                             })}
                             className="w-full rounded-xl border border-slate-300 px-4 py-3 pr-12 outline-none focus:border-indigo-600"
                         />
-
                         <button
                             type="button"
-                            onClick={() =>
-                                setShowPassword(!showPassword)
-                            }
+                            onClick={() => setShowPassword(!showPassword)}
                             className="absolute right-4 top-1/2 -translate-y-1/2"
                         >
-                            {showPassword ? (
-                                <HiEyeSlash />
-                            ) : (
-                                <HiEye />
-                            )}
+                            {showPassword ? <HiEyeSlash /> : <HiEye />}
                         </button>
                     </div>
-
                     <p className="mt-1 text-sm text-red-500">
                         {errors.password?.message}
                     </p>
                 </div>
 
                 {/* Confirm Password */}
-
                 <div>
                     <label className="mb-2 block font-medium">
                         Confirm Password
                     </label>
-
                     <div className="relative">
                         <input
-                            type={
-                                showConfirmPassword
-                                    ? "text"
-                                    : "password"
-                            }
+                            type={showConfirmPassword ? "text" : "password"}
                             {...register("confirmPassword", {
                                 validate: (value) =>
                                     value === password ||
@@ -176,44 +156,32 @@ const RegisterForm = () => {
                             })}
                             className="w-full rounded-xl border border-slate-300 px-4 py-3 pr-12 outline-none focus:border-indigo-600"
                         />
-
                         <button
                             type="button"
                             onClick={() =>
-                                setShowConfirmPassword(
-                                    !showConfirmPassword
-                                )
+                                setShowConfirmPassword(!showConfirmPassword)
                             }
                             className="absolute right-4 top-1/2 -translate-y-1/2"
                         >
-                            {showConfirmPassword ? (
-                                <HiEyeSlash />
-                            ) : (
-                                <HiEye />
-                            )}
+                            {showConfirmPassword ? <HiEyeSlash /> : <HiEye />}
                         </button>
                     </div>
-
                     <p className="mt-1 text-sm text-red-500">
                         {errors.confirmPassword?.message}
                     </p>
                 </div>
 
                 {/* Role */}
-
                 <div>
                     <label className="mb-2 block font-medium">
                         Register As
                     </label>
-
                     <select
                         {...register("role")}
                         className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none focus:border-indigo-600"
                     >
                         <option value="student">Student</option>
-                        <option value="instructor">
-                            Instructor
-                        </option>
+                        <option value="instructor">Instructor</option>
                     </select>
                 </div>
 
@@ -221,9 +189,7 @@ const RegisterForm = () => {
                     disabled={loading}
                     className="w-full rounded-xl bg-indigo-600 py-3 font-semibold text-white transition hover:bg-indigo-700 disabled:opacity-50"
                 >
-                    {loading
-                        ? "Creating Account..."
-                        : "Create Account"}
+                    {loading ? "Creating Account..." : "Create Account"}
                 </button>
             </form>
         </AuthLayout>

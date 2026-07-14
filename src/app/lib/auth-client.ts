@@ -6,5 +6,6 @@ export const authClient = createAuthClient({
 
     plugins: [
         jwtClient(),
+
     ],
 });

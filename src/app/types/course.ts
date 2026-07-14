@@ -1,18 +1,45 @@
-export type CourseLevel = "Beginner" | "Intermediate" | "Advanced";
+export type CourseLevel =
+    | "Beginner"
+    | "Intermediate"
+    | "Advanced";
 
 export interface Course {
-    id: string;
-    slug: string;
+    _id?: string;
+
     title: string;
+    thumbnail: string;
     category: string;
     level: CourseLevel;
+
     duration: string;
     price: number;
-    rating: number;
-    students: number;
-    thumbnail: string;
+
     shortDescription: string;
-    fullDescription: string;
+    description: string;
+
+    requirements: string[];
     learningOutcomes: string[];
-    instructor: string;
+
+    instructorId: string;
+    instructorName: string;
+    instructorEmail: string;
+
+    createdAt?: string;
+    updatedAt?: string;
+}
+
+export interface CourseFormData {
+    title: string;
+    thumbnail: string;
+    category: string;
+    level: CourseLevel;
+
+    duration: string;
+    price: number;
+
+    shortDescription: string;
+    description: string;
+
+    requirements: string;
+    learningOutcomes: string;
 }
