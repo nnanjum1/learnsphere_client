@@ -75,3 +75,30 @@ export const updateCourse = async (
 
     return res.json();
 };
+
+export const getAllCourses = async ({
+    page = 1,
+    limit = 6,
+    search = "",
+    category = "",
+    level = "",
+    sort = "newest",
+}) => {
+    const params = new URLSearchParams({
+        page: String(page),
+        limit: String(limit),
+        search,
+        category,
+        level,
+        sort,
+    });
+
+    const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/courses?${params.toString()}`,
+        {
+            cache: "no-store",
+        }
+    );
+
+    return res.json();
+};
