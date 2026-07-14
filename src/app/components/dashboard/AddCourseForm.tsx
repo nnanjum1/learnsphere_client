@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 
 import { Course, CourseFormData } from "@/app/types/course";
 import { createCourse } from "@/app/services/course.service";
+import { categories } from "@/app/constants/categories";
 
 const AddCourseForm = () => {
     const router = useRouter();
@@ -90,11 +91,20 @@ const AddCourseForm = () => {
                     className="w-full rounded-xl border p-3"
                 />
 
-                <input
-                    {...register("category")}
-                    placeholder="Category"
-                    className="w-full rounded-xl border p-3"
-                />
+                <select
+                    {...register("category", {
+                        required: "Category is required",
+                    })}
+                    className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none focus:border-indigo-600"
+                >
+                    <option value="">Select Category</option>
+
+                    {categories.map((category) => (
+                        <option key={category} value={category}>
+                            {category}
+                        </option>
+                    ))}
+                </select>
 
                 <select
                     {...register("level")}

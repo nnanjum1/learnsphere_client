@@ -25,3 +25,19 @@ export const getInstructorCourses = async (
 
     return res.json();
 };
+
+
+export const deleteCourse = async (id: string) => {
+    const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/courses/${id}`,
+        {
+            method: "DELETE",
+        }
+    );
+
+    if (!res.ok) {
+        throw new Error("Failed to delete course");
+    }
+
+    return res.json();
+};
