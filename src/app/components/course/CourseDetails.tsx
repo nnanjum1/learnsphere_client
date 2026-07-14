@@ -275,12 +275,15 @@ const CourseDetails = ({
                         </Link>
                     ) : role === "student" ? (
                         isEnrolled ? (
-                            <button
-                                disabled
-                                className="cursor-not-allowed rounded-xl bg-green-600 px-8 py-4 font-semibold text-white opacity-70"
-                            >
-                                ✓ Enrolled
-                            </button>
+
+
+                            <div className="flex items-center gap-3">
+                                <button disabled className="cursor-not-allowed rounded-xl bg-blue-400 px-8 py-4 font-semibold text-white opacity-70">
+                                    ✓ Enrolled
+                                </button>
+                                <Link href="/dashboard/my-courses" className="text-indigo-600">View My Courses</Link>
+                            </div>
+
 
                         ) : (
                             <button
