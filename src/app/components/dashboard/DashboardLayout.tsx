@@ -35,7 +35,6 @@ const DashboardLayout = ({
                         onClick={() => setIsOpen(false)}
                     />
 
-                    {/* Drawer */}
                     <div className="relative h-full w-72 bg-white shadow-xl">
                         <div className="flex items-center justify-between border-b p-5">
                             <h2 className="text-xl font-bold text-indigo-600">
@@ -59,9 +58,8 @@ const DashboardLayout = ({
                 </div>
             )}
 
-            {/* Main Content */}
+
             <div className="flex min-w-0 flex-1 flex-col">
-                {/* Mobile Header */}
                 <div className="flex items-center justify-between border-b bg-white px-5 py-4 lg:hidden">
                     <button
                         onClick={() => setIsOpen(true)}

@@ -1,17 +1,16 @@
-const Dashboard = () => {
-    return (
-        <div>
+"use client";
 
-            <h2 className="text-3xl font-bold">
-                Dashboard
-            </h2>
+import { authClient } from "@/app/lib/auth-client";
+import InstructorDashboard from "@/app/components/dashboard/InstructorDashboard";
 
-            <p className="mt-3 text-slate-600">
-                Welcome to LearnSphere Dashboard.
-            </p>
+export default function DashboardPage() {
+    const { data: session } = authClient.useSession();
 
-        </div>
-    );
-};
+    const role = (session?.user as { role?: string })?.role;
 
-export default Dashboard;
+    if (role === "instructor") {
+        return <InstructorDashboard />;
+    }
+
+    return <div>Student Dashboard</div>;
+}
