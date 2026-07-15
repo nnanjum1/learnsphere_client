@@ -112,10 +112,23 @@ const Footer = () => {
                         </h3>
 
                         <ul className="space-y-3">
-                            <li>Frontend Development</li>
-                            <li>Backend Development</li>
-                            <li>AI & Machine Learning</li>
-                            <li>Mobile App Development</li>
+                            <li>Web Development</li>
+                            <li>App Development</li>
+                            <li>Programming Languages</li>
+                            <li>Data Science</li>
+                            <li>Machine Learning</li>
+                            <li>Artificial Intelligence</li>
+                            <li>Cyber Security</li>
+                            <li>Cloud Computing</li>
+                            <li>UI/UX Design</li>
+                            <li>Graphic Design</li>
+                            <li>Digital Marketing</li>
+                            <li>Business</li>
+                            <li>Finance</li>
+                            <li>Photography &amp; Video</li>
+                            <li>Music</li>
+                            <li>Language Learning</li>
+                            <li>Personal Development</li>
                         </ul>
                     </div>
 
@@ -130,7 +143,7 @@ const Footer = () => {
 
                             <p>support@learnsphere.com</p>
 
-                            <p>+880 1234-567890</p>
+                            <p>+880 1712345678</p>
                         </div>
                     </div>
                 </div>

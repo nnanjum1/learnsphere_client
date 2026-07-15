@@ -23,8 +23,19 @@ const LoginForm = () => {
     const {
         register,
         handleSubmit,
+        setValue,
         formState: { errors },
     } = useForm<LoginFormData>();
+
+    const fillStudent = () => {
+        setValue("email", "student@gmail.com");
+        setValue("password", "123456");
+    };
+
+    const fillInstructor = () => {
+        setValue("email", "instructor@gmail.com");
+        setValue("password", "123456");
+    };
 
     const onSubmit = async (data: LoginFormData) => {
         setLoading(true);
@@ -62,6 +73,30 @@ const LoginForm = () => {
                 onSubmit={handleSubmit(onSubmit)}
                 className="space-y-5"
             >
+                <div className="rounded-xl border border-indigo-200 bg-indigo-50 p-4">
+                    <p className="mb-3 text-sm font-semibold text-indigo-700">
+                        Demo Accounts
+                    </p>
+
+                    <div className="flex flex-col gap-3 sm:flex-row">
+                        <button
+                            type="button"
+                            onClick={fillStudent}
+                            className="flex-1 rounded-lg bg-green-600 px-4 py-2 font-medium text-white transition hover:bg-green-700"
+                        >
+                            Student Demo
+                        </button>
+
+                        <button
+                            type="button"
+                            onClick={fillInstructor}
+                            className="flex-1 rounded-lg bg-indigo-600 px-4 py-2 font-medium text-white transition hover:bg-indigo-700"
+                        >
+                            Instructor Demo
+                        </button>
+                    </div>
+                </div>
+
                 <div>
                     <label className="mb-2 block font-medium">
                         Email
@@ -121,6 +156,8 @@ const LoginForm = () => {
                     {loading ? "Logging in..." : "Login"}
                 </button>
             </form>
+
+
         </AuthLayout>
     );
 };
