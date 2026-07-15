@@ -1,22 +1,16 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useState } from "react";
-import { authClient } from "@/app/lib/auth-client";
 import { getStudentDashboard } from "@/app/services/dashboard.service";
 import { toast } from "react-toastify";
-import { useRouter } from "next/navigation";
 
-const StudentDashboard = () => {
-    const router = useRouter();
-    const { data: session } =
-        authClient.useSession();
+interface StudentDashboardProps {
+    email: string;
+}
 
-    const [loading, setLoading] =
-        useState(true);
-
-    const [dashboard, setDashboard] =
-        useState<any>(null);
+const StudentDashboard = ({ email }: StudentDashboardProps) => {
+    const [loading, setLoading] = useState(true);
+    const [dashboard, setDashboard] = useState<any>(null);
 
     const handleContinueLearning = () => {
         toast.info("This feature will be implemented later.");
@@ -24,24 +18,24 @@ const StudentDashboard = () => {
 
     useEffect(() => {
         const loadDashboard = async () => {
-            if (!session?.user?.email) return;
+            try {
+                const result = await getStudentDashboard(email);
 
-            const result =
-                await getStudentDashboard(
-                    session.user.email
-                );
-
-            if (result.success) {
-                setDashboard(result);
+                if (result.success) {
+                    setDashboard(result);
+                }
+            } catch (error) {
+                console.error(error);
+                toast.error("Failed to load dashboard");
+            } finally {
+                setLoading(false);
             }
-
-            setLoading(false);
         };
 
         loadDashboard();
-    }, [session]);
+    }, [email]);
 
-    if (loading) {
+    if (loading || !dashboard) {
         return (
             <div className="py-20 text-center">
                 Loading...
@@ -51,13 +45,11 @@ const StudentDashboard = () => {
 
     return (
         <div>
-
             <h1 className="mb-8 text-4xl font-bold">
                 Student Dashboard
             </h1>
 
             <div className="mb-10 grid gap-6 md:grid-cols-3">
-
                 <div className="rounded-2xl bg-white p-6 shadow">
                     <p className="text-slate-500">
                         Enrolled Courses
@@ -87,64 +79,48 @@ const StudentDashboard = () => {
                         ${dashboard.summary.totalSpent}
                     </h2>
                 </div>
-
             </div>
 
             <div className="rounded-2xl bg-white p-6 shadow">
-
                 <h2 className="mb-6 text-2xl font-bold">
                     Continue Learning
                 </h2>
 
                 <div className="space-y-6">
+                    {dashboard.recentCourses.map((course: any) => (
+                        <div
+                            key={course._id}
+                            className="rounded-xl border p-5"
+                        >
+                            <div className="mb-3 flex items-center justify-between">
+                                <h3 className="font-semibold">
+                                    {course.courseTitle}
+                                </h3>
 
-                    {dashboard.recentCourses.map(
-                        (course: any) => (
-
-                            <div
-                                key={course._id}
-                                className="rounded-xl border p-5"
-                            >
-
-                                <div className="mb-3 flex items-center justify-between">
-
-                                    <h3 className="font-semibold">
-                                        {course.courseTitle}
-                                    </h3>
-
-                                    <span>
-                                        {course.progress}%
-                                    </span>
-
-                                </div>
-
-                                <div className="mb-4 h-3 rounded-full bg-slate-200">
-
-                                    <div
-                                        className="h-3 rounded-full bg-indigo-600"
-                                        style={{
-                                            width: `${course.progress}%`,
-                                        }}
-                                    />
-
-                                </div>
-
-                                <button
-                                    onClick={handleContinueLearning}
-                                    className="rounded-lg bg-indigo-600 px-5 py-2 text-white"
-                                >
-                                    Continue
-                                </button>
-
+                                <span>
+                                    {course.progress}%
+                                </span>
                             </div>
 
-                        )
-                    )}
+                            <div className="mb-4 h-3 rounded-full bg-slate-200">
+                                <div
+                                    className="h-3 rounded-full bg-indigo-600"
+                                    style={{
+                                        width: `${course.progress}%`,
+                                    }}
+                                />
+                            </div>
 
+                            <button
+                                onClick={handleContinueLearning}
+                                className="rounded-lg bg-indigo-600 px-5 py-2 text-white"
+                            >
+                                Continue
+                            </button>
+                        </div>
+                    ))}
                 </div>
-
             </div>
-
         </div>
     );
 };

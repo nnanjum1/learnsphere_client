@@ -1,39 +1,26 @@
-"use client";
+import { getSession } from "@/app/lib/get-session";
 
-import { authClient } from "@/app/lib/auth-client";
 import InstructorDashboard from "@/app/components/dashboard/InstructorDashboard";
-import StudentDashboard from "../components/dashboard/StudentDashboard";
+import StudentDashboard from "@/app/components/dashboard/StudentDashboard";
 
-
-export default function DashboardPage() {
-
-    const {
-        data: session,
-        isPending
-    } = authClient.useSession();
-
-
-    if (isPending) {
-        return (
-            <div className="py-20 text-center">
-                Loading dashboard...
-            </div>
-        );
-    }
-
+export default async function DashboardPage() {
+    const session = await getSession();
 
     if (!session?.user) {
         return null;
     }
 
-
-    const role =
-        (session?.user as { role?: string })?.role;
-
-    if (role === "instructor") {
-        return <InstructorDashboard />;
+    if (session.user.role === "instructor") {
+        return (
+            <InstructorDashboard
+                email={session.user.email}
+            />
+        );
     }
 
-
-    return <StudentDashboard />;
+    return (
+        <StudentDashboard
+            email={session.user.email}
+        />
+    );
 }

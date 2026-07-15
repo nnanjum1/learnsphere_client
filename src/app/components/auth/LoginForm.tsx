@@ -48,11 +48,11 @@ const LoginForm = () => {
                 },
                 {
                     onSuccess: async () => {
-                        await authClient.getSession();
-
                         toast.success("Login successful");
 
-                        router.replace("/");
+                        router.push("/dashboard");
+
+                        router.refresh();
                     },
 
                     onError: (ctx) => {
