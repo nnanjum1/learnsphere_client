@@ -11,9 +11,13 @@ export default async function Layout({
 
     const session = await getSession();
 
+    console.log("DASHBOARD SESSION:", session);
+
     if (!session?.user) {
         redirect("/login");
     }
+
+    console.log("USER ROLE:", session.user.role);
 
     return (
         <DashboardLayout

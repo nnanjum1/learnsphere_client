@@ -301,7 +301,7 @@ const CourseDetails = ({
                         )
                     ) : (
                         <div className="rounded-xl bg-green-100 p-4 text-green-700">
-                            You are the instructor of this course.
+                            Viewing this course as a instructor
                         </div>)}
 
                 </div>
