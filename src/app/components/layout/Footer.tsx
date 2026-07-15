@@ -148,25 +148,10 @@ const Footer = () => {
                     </div>
                 </div>
 
-                <div className="flex flex-col items-center justify-between gap-4 border-t border-slate-800 py-6 text-center text-sm text-slate-500 md:flex-row">                    <p>
-                    © 2026 LearnSphere. All rights reserved.
-                </p>
-
-                    <div className="flex gap-6">
-                        <Link
-                            href="/privacy"
-                            className="hover:text-indigo-400"
-                        >
-                            Privacy Policy
-                        </Link>
-
-                        <Link
-                            href="/terms"
-                            className="hover:text-indigo-400"
-                        >
-                            Terms of Service
-                        </Link>
-                    </div>
+                <div className="border-t border-slate-800 py-8 text-center text-sm text-slate-500">
+                    <p className="mx-auto">
+                        © 2026 LearnSphere. All rights reserved.
+                    </p>
                 </div>
             </Container>
         </footer>
