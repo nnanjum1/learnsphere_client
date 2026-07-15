@@ -1,13 +1,12 @@
-import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
-import { auth } from "@/app/lib/auth";
+
 import RegisterForm from "@/app/components/auth/RegisterForm";
+import { getSession } from "../lib/get-session";
 
 const RegisterPage = async () => {
-    const session = await auth.api.getSession({
-        headers: await headers(),
-    });
+    const session = await getSession();
+
 
     if (session) {
         redirect("/");
