@@ -27,23 +27,30 @@ const CourseDetails = ({
     const role = (session?.user as { role?: string })?.role;
 
 
-    // useEffect(() => {
-    //     if (!session?.user || role !== "student" || !course?._id) return;
+    useEffect(() => {
+        if (!session?.user || role !== "student" || !course?._id) return;
 
-    //     const checkEnrollment = async () => {
-    //         const res = await fetch(
-    //             `${process.env.NEXT_PUBLIC_API_URL}/enrollments/check/${course._id}/${session.user.email}`
-    //         );
+        const checkEnrollment = async () => {
+            try {
+                const res = await fetch(
+                    `${process.env.NEXT_PUBLIC_API_URL}/enrollments/check/${course._id}/${encodeURIComponent(session.user.email)}`
+                );
 
-    //         const result = await res.json();
+                const result = await res.json();
 
-    //         if (result.enrolled) {
-    //             setIsEnrolled(true);
-    //         }
-    //     };
+                console.log("Enrollment check:", result);
 
-    //     checkEnrollment();
-    // }, [course, session, role]);
+                setIsEnrolled(result.enrolled === true);
+
+            } catch (error) {
+                console.error("Enrollment check failed:", error);
+                setIsEnrolled(false);
+            }
+        };
+
+        checkEnrollment();
+
+    }, [course?._id, session?.user?.email, role]);
 
     useEffect(() => {
         const loadCourse = async () => {
@@ -53,8 +60,6 @@ const CourseDetails = ({
 
                 if (result.success) {
                     setCourse(result.course);
-                    setIsEnrolled(true);
-
                 }
             } catch (error) {
                 console.error(error);
@@ -92,6 +97,7 @@ const CourseDetails = ({
                 `${process.env.NEXT_PUBLIC_API_URL}/enrollments`,
                 {
                     method: "POST",
+                    credentials: "include",
                     headers: {
                         "Content-Type": "application/json",
                     },
@@ -100,10 +106,9 @@ const CourseDetails = ({
                         studentId: session.user.id,
                         studentName: session.user.name,
                         studentEmail: session.user.email,
-                    }),
+                    })
                 }
             );
-
             const result = await res.json();
 
             if (result.success) {
