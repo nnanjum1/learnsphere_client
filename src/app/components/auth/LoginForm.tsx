@@ -46,8 +46,27 @@ const LoginForm = () => {
                 password: data.password,
             },
             {
-                onSuccess: () => {
+                onSuccess: async () => {
+                    const session = await authClient.getSession();
+
+                    await fetch(
+                        `${process.env.NEXT_PUBLIC_API_URL}/auth/jwt`,
+                        {
+                            method: "POST",
+                            credentials: "include",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({
+                                id: session.data?.user.id,
+                                email: session.data?.user.email,
+                                role: (session.data?.user as any).role,
+                            }),
+                        }
+                    );
+
                     toast.success("Login successful!");
+
                     router.push("/");
                     router.refresh();
                 },

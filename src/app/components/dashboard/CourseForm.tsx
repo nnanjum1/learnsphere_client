@@ -11,6 +11,7 @@ import {
     updateCourse,
 } from "@/app/services/course.service";
 import { categories } from "@/app/constants/categories";
+import { useEffect } from "react";
 
 interface CourseFormProps {
     mode: "add" | "edit";
@@ -24,7 +25,22 @@ const CourseForm = ({
 
     const router = useRouter();
 
-    const { data: session } = authClient.useSession();
+    const { data: session, isPending } = authClient.useSession();
+
+    const role = (session?.user as { role?: string })?.role;
+
+    useEffect(() => {
+        if (isPending) return;
+
+        if (!session?.user) {
+            router.replace("/login");
+            return;
+        }
+
+        if (role !== "instructor") {
+            router.replace("/");
+        }
+    }, [session, role, isPending, router]);
 
     const {
         register,
@@ -55,6 +71,8 @@ const CourseForm = ({
             return;
         }
 
+        const user = session.user;
+
         const courseData: Course = {
             title: data.title,
             thumbnail: data.thumbnail,
@@ -77,9 +95,9 @@ const CourseForm = ({
                 .map((item) => item.trim())
                 .filter(Boolean),
 
-            instructorId: session.user.id,
-            instructorName: session.user.name,
-            instructorEmail: session.user.email,
+            instructorId: user.id,
+            instructorName: user.name,
+            instructorEmail: user.email,
             enrollmentCount: 0,
             createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString(),

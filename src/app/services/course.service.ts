@@ -5,8 +5,12 @@ import { Course } from "@/app/types/course";
 const API = process.env.NEXT_PUBLIC_API_URL;
 
 export const createCourse = async (course: Course) => {
+
     const res = await fetch(`${API}/courses`, {
         method: "POST",
+        credentials: "include",
+
+
         headers: {
             "Content-Type": "application/json",
         },
