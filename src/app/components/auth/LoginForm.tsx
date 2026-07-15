@@ -49,30 +49,29 @@ const LoginForm = () => {
                 onSuccess: async () => {
                     const session = await authClient.getSession();
 
-                    await fetch(
-                        `${process.env.NEXT_PUBLIC_API_URL}/auth/jwt`,
-                        {
-                            method: "POST",
-                            credentials: "include",
-                            headers: {
-                                "Content-Type": "application/json",
-                            },
-                            body: JSON.stringify({
-                                id: session.data?.user.id,
-                                email: session.data?.user.email,
-                                role: (session.data?.user as any).role,
-                            }),
-                        }
-                    );
+                    console.log("SESSION:", session);
 
-                    toast.success("Login successful!");
+                    if (!session.data?.user) {
+                        toast.error("Session not found after login");
+                        return;
+                    }
+
+                    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/jwt`, {
+                        method: "POST",
+                        credentials: "include",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            id: session.data.user.id,
+                            email: session.data.user.email,
+                            role: (session.data.user as any).role,
+                        }),
+                    });
 
                     router.push("/");
-                    router.refresh();
-                },
-                onError: (ctx) => {
-                    toast.error(ctx.error.message);
-                },
+                }
+
             }
         );
 
