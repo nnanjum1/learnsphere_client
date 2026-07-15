@@ -40,43 +40,32 @@ const LoginForm = () => {
     const onSubmit = async (data: LoginFormData) => {
         setLoading(true);
 
-        await authClient.signIn.email(
-            {
-                email: data.email,
-                password: data.password,
-            },
-            {
-                onSuccess: async () => {
-                    const session = await authClient.getSession();
+        try {
+            await authClient.signIn.email(
+                {
+                    email: data.email,
+                    password: data.password,
+                },
+                {
+                    onSuccess: async () => {
+                        await authClient.getSession();
 
-                    console.log("SESSION:", session);
+                        toast.success("Login successful");
 
-                    if (!session.data?.user) {
-                        toast.error("Session not found after login");
-                        return;
-                    }
+                        router.replace("/");
+                    },
 
-                    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/jwt`, {
-                        method: "POST",
-                        credentials: "include",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({
-                            id: session.data.user.id,
-                            email: session.data.user.email,
-                            role: (session.data.user as any).role,
-                        }),
-                    });
-
-                    router.push("/");
+                    onError: (ctx) => {
+                        toast.error(ctx.error.message);
+                    },
                 }
+            );
 
-            }
-        );
-
-        setLoading(false);
-
+        } catch (error) {
+            toast.error("Something went wrong");
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
