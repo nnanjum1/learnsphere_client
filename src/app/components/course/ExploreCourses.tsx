@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import Link from "next/link";
 import { getAllCourses } from "@/app/services/course.service";
 import { Course } from "@/app/types/course";
 import { useSearchParams } from "next/navigation";
 
-const ExploreCourses = () => {
+const ExploreCoursesContent = () => {
     const [courses, setCourses] = useState<Course[]>([]);
     const [loading, setLoading] = useState(true);
     const searchParams = useSearchParams();
@@ -14,10 +14,10 @@ const ExploreCourses = () => {
     const [search, setSearch] = useState("");
     const [debouncedSearch, setDebouncedSearch] = useState("");
 
-    const [category, setCategory] =
-        useState(
-            searchParams.get("category") || ""
-        ); const [level, setLevel] = useState("");
+    const [category, setCategory] = useState(
+        searchParams.get("category") || ""
+    );
+    const [level, setLevel] = useState("");
     const [sort, setSort] = useState("newest");
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
@@ -30,7 +30,6 @@ const ExploreCourses = () => {
         return () => clearTimeout(handler);
     }, [search]);
 
-    // 2. Main data fetching cycle linked to the debounced search variable
     useEffect(() => {
         const fetchCourses = async () => {
             setLoading(true);
@@ -64,7 +63,7 @@ const ExploreCourses = () => {
                 </p>
             </div>
 
-            {/* PERSISTENT FILTERS SECTION (Never disappears now) */}
+            {/* PERSISTENT FILTERS SECTION */}
             <div className="mb-8 grid gap-4 md:grid-cols-4">
                 <input
                     type="text"
@@ -72,7 +71,7 @@ const ExploreCourses = () => {
                     value={search}
                     onChange={(e) => {
                         setSearch(e.target.value);
-                        setPage(1); // Reset page on query modification
+                        setPage(1);
                     }}
                     className="rounded-xl border p-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
@@ -180,7 +179,6 @@ const ExploreCourses = () => {
                                         <span className="text-2xl font-bold text-indigo-600">
                                             ${course.price}
                                         </span>
-                                        <span className="text-yellow-500">★ 4.8</span>
                                     </div>
 
                                     <Link
@@ -217,4 +215,14 @@ const ExploreCourses = () => {
     );
 };
 
-export default ExploreCourses;
+export default function ExploreCourses() {
+    return (
+        <Suspense fallback={
+            <div className="py-20 text-center text-lg text-slate-500">
+                Initializing Course View Layout...
+            </div>
+        }>
+            <ExploreCoursesContent />
+        </Suspense>
+    );
+}

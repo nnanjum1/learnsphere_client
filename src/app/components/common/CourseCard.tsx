@@ -30,9 +30,7 @@ const CourseCard = ({ course }: CourseCardProps) => {
                         {course.level}
                     </span>
 
-                    <span className="text-sm font-semibold text-amber-500">
-                        ⭐ {course.rating}
-                    </span>
+
                 </div>
 
                 <h3 className="text-xl font-bold text-slate-900">
@@ -46,7 +44,6 @@ const CourseCard = ({ course }: CourseCardProps) => {
                 <div className="mt-5 flex items-center justify-between text-sm text-slate-500">
                     <span>⏱ {course.duration}</span>
 
-                    <span>👨‍🎓 {course.students}</span>
                 </div>
 
                 <div className="mt-6 flex items-center justify-between">
@@ -54,7 +51,7 @@ const CourseCard = ({ course }: CourseCardProps) => {
                         ${course.price}
                     </p>
 
-                    <Link href={`/courses/${course.slug}`}>
+                    <Link href={`/courses/${course._id}`}>
                         <Button>View Details</Button>
                     </Link>
                 </div>

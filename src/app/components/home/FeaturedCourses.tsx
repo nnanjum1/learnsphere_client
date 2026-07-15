@@ -3,13 +3,13 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
-import CourseCard from "../common/CourseCard";
 import Container from "../common/Container";
 import SectionTitle from "../common/SectionTitle";
 import Button from "../common/Button";
 
 import { Course } from "@/app/types/course";
 import { getFeaturedCourses } from "@/app/services/course.service";
+import CourseCard from "../common/CourseCard";
 
 const FeaturedCourses = () => {
     const [courses, setCourses] = useState<Course[]>([]);
