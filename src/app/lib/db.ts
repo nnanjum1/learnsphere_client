@@ -4,6 +4,6 @@ const uri = process.env.MONGODB_URI!;
 
 const client = new MongoClient(uri);
 
-export const db = client.db(process.env.DB);
+export const db = client.db(process.env.db);
 
 export { client };
