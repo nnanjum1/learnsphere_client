@@ -1,3 +1,4 @@
+"use client"
 import Image from "next/image";
 import Link from "next/link";
 
@@ -5,8 +6,10 @@ import Button from "../common/Button";
 import Container from "../common/Container";
 
 import heroImage from "@/app/assets/images/hero.png";
+import { authClient } from "@/app/lib/auth-client";
 
 const Hero = () => {
+    const { data: session } = authClient.useSession();
     return (
         <section className="overflow-hidden bg-slate-50">
             <div className="absolute -top-40 -left-40 h-96 w-96 rounded-full bg-indigo-300/20 blur-3xl" />
@@ -28,8 +31,7 @@ const Hero = () => {
                         <h1 className="mt-6 text-4xl font-bold leading-tight text-slate-900 sm:text-5xl lg:text-6xl">
                             Learn Today.
                             <br />
-                            Build Tomorrow.
-                        </h1>
+                            Build Your Career Tomorrow.                        </h1>
 
 
 
@@ -47,11 +49,19 @@ const Hero = () => {
                                 </Button>
                             </Link>
 
-                            <Link href="/register">
-                                <Button variant="outline">
-                                    Become an Instructor
-                                </Button>
-                            </Link>
+                            {session?.user ? (
+                                <Link href="/dashboard">
+                                    <Button variant="outline">
+                                        Go to Dashboard
+                                    </Button>
+                                </Link>
+                            ) : (
+                                <Link href="/register">
+                                    <Button variant="outline">
+                                        Get Started
+                                    </Button>
+                                </Link>
+                            )}
                         </div>
 
 

@@ -1,9 +1,13 @@
+"use client"
+
 import Link from "next/link";
 
 import Button from "../common/Button";
 import Container from "../common/Container";
+import { authClient } from "@/app/lib/auth-client";
 
 const CTA = () => {
+    const { data: session } = authClient.useSession();
     return (
         <section className="py-20">
             <Container>
@@ -17,28 +21,29 @@ const CTA = () => {
                     </h2>
 
                     <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-indigo-100 sm:text-lg">
-                        Join thousands of learners exploring modern technologies,
-                        building real-world projects, and preparing for successful careers.
+                        Master in-demand skills through expert-led courses, hands-on learning, and flexible study from anywhere. Start your journey with LearnSphere today.
                     </p>
 
                     <div className="mt-10 flex flex-col justify-center gap-4 sm:flex-row">
-                        <Link href="/courses">
-                            <Button
-                                variant="secondary"
-                                className="border-white bg-white text-indigo-700 hover:bg-slate-100 hover:text-indigo-700"
-                            >
-                                Explore Courses
-                            </Button>
-                        </Link>
-
-                        <Link href="/register">
-                            <Button
-                                variant="outline"
-                                className="border-white text-white hover:bg-white hover:text-indigo-700"
-                            >
-                                Join Free
-                            </Button>
-                        </Link>
+                        {session?.user ? (
+                            <Link href="/dashboard">
+                                <Button
+                                    variant="outline"
+                                    className="border-white text-white hover:bg-white hover:text-indigo-700"
+                                >
+                                    Go to Dashboard
+                                </Button>
+                            </Link>
+                        ) : (
+                            <Link href="/register">
+                                <Button
+                                    variant="outline"
+                                    className="border-white text-white hover:bg-white hover:text-indigo-700"
+                                >
+                                    Join Free
+                                </Button>
+                            </Link>
+                        )}
                     </div>
                 </div>
             </Container>

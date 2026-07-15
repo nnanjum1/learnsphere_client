@@ -7,7 +7,6 @@ import SectionTitle from "../common/SectionTitle";
 import Link from "next/link";
 import { getCourseCategories } from "@/app/services/course.service";
 
-import { LearningPath } from "@/app/types/learningPath";
 
 const LearningPaths = () => {
     const [categories, setCategories] =
