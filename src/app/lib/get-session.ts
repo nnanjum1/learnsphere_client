@@ -5,20 +5,22 @@ export async function getSession() {
 
     const cookieStore = await cookies();
 
-    const cookiesHeader = cookieStore
+
+    const cookieHeader = cookieStore
         .getAll()
         .map(
             ({ name, value }) =>
                 `${name}=${value}`
         )
-        .join(";");
+        .join("; ");
 
 
     const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/auth/get-session`,
         {
+            method: "GET",
             headers: {
-                Cookie: cookiesHeader,
+                Cookie: cookieHeader,
             },
             cache: "no-store",
         }
@@ -26,9 +28,23 @@ export async function getSession() {
 
 
     if (!res.ok) {
+        console.log(
+            "Session request failed:",
+            res.status
+        );
+
         return null;
     }
 
 
-    return await res.json();
+    const session = await res.json();
+
+
+    console.log(
+        "SERVER SESSION:",
+        session
+    );
+
+
+    return session;
 }

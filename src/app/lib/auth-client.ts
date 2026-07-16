@@ -10,4 +10,8 @@ export const authClient = createAuthClient({
         jwtClient()
     ],
 
+    fetchOptions: {
+        credentials: "include"
+    }
+
 });
