@@ -8,10 +8,7 @@ export async function getSession() {
 
     const cookieHeader = cookieStore
         .getAll()
-        .map(
-            ({ name, value }) =>
-                `${name}=${value}`
-        )
+        .map(({ name, value }) => `${name}=${value}`)
         .join("; ");
 
 
@@ -28,6 +25,7 @@ export async function getSession() {
 
 
     if (!res.ok) {
+
         console.log(
             "Session request failed:",
             res.status
@@ -37,14 +35,5 @@ export async function getSession() {
     }
 
 
-    const session = await res.json();
-
-
-    console.log(
-        "SERVER SESSION:",
-        session
-    );
-
-
-    return session;
+    return await res.json();
 }
