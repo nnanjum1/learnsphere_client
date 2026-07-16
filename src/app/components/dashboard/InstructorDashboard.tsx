@@ -93,11 +93,11 @@ const InstructorDashboard = ({
 
             <div className="overflow-x-auto rounded-2xl bg-white shadow">
                 <table className="table">
-                    <thead>
+                    <thead >
                         <tr>
-                            <th>Course</th>
+                            <th className="p-2">Course</th>
                             <th className="pr-1">
-                                Price
+                                Current Price
                             </th>
                             <th className="px-1">
                                 Students
@@ -109,8 +109,8 @@ const InstructorDashboard = ({
                     </thead>
 
                     <tbody>
-                        {dashboard.courses.map(
-                            (course: any) => (
+                        {dashboard.courses?.length > 0 ? (
+                            dashboard.courses.map((course: any) => (
                                 <tr key={course._id}>
                                     <td className="px-2">
                                         {course.title}
@@ -121,16 +121,23 @@ const InstructorDashboard = ({
                                     </td>
 
                                     <td className="pl-2">
-                                        {
-                                            course.enrollmentCount
-                                        }
+                                        {course.enrollmentCount}
                                     </td>
 
                                     <td className="pl-2 font-bold text-green-600">
                                         ${course.revenue}
                                     </td>
                                 </tr>
-                            )
+                            ))
+                        ) : (
+                            <tr>
+                                <td
+                                    colSpan={4}
+                                    className="p-10 text-center text-slate-500"
+                                >
+                                    No courses found!
+                                </td>
+                            </tr>
                         )}
                     </tbody>
                 </table>

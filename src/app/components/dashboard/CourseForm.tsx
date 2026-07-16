@@ -2,51 +2,91 @@
 
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import { authClient } from "@/app/lib/auth-client";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
-import { Course, CourseFormData } from "@/app/types/course";
+import { authClient } from "@/app/lib/auth-client";
+
+import {
+    Course,
+    CourseFormData,
+} from "@/app/types/course";
+
 import {
     createCourse,
     updateCourse,
 } from "@/app/services/course.service";
+
 import { categories } from "@/app/constants/categories";
-import { useEffect } from "react";
+
 
 interface CourseFormProps {
     mode: "add" | "edit";
     course?: Course;
 }
 
+
 const CourseForm = ({
     mode,
     course,
 }: CourseFormProps) => {
 
+
     const router = useRouter();
 
-    const { data: session, isPending } = authClient.useSession();
 
-    const role = (session?.user as { role?: string })?.role;
+    const {
+        data: session,
+        isPending,
+    } = authClient.useSession();
+
+
+
+    const role = (
+        session?.user as {
+            role?: string
+        }
+    )?.role;
+
+
 
     useEffect(() => {
+
         if (isPending) return;
+
 
         if (!session?.user) {
             router.replace("/login");
             return;
         }
 
+
         if (role !== "instructor") {
             router.replace("/");
         }
-    }, [session, role, isPending, router]);
+
+
+    }, [
+        session,
+        role,
+        isPending,
+        router
+    ]);
+
+
+
 
     const {
         register,
         handleSubmit,
         reset,
+        formState: {
+            errors,
+            isValid,
+        },
     } = useForm<CourseFormData>({
+        mode: "onChange",
+
         defaultValues: course
             ? {
                 title: course.title,
@@ -54,185 +94,625 @@ const CourseForm = ({
                 category: course.category,
                 level: course.level,
                 duration: course.duration,
-                price: course.price,
-                shortDescription: course.shortDescription,
-                description: course.description,
+                price: Number(course.price),
+
+                shortDescription:
+                    course.shortDescription,
+
+                description:
+                    course.description,
+
                 requirements:
-                    course.requirements.join("\n"),
+                    course.requirements?.join("\n") || "",
+
                 learningOutcomes:
-                    course.learningOutcomes.join("\n"),
+                    course.learningOutcomes?.join("\n") || "",
             }
-            : undefined,
+            : {
+                title: "",
+                thumbnail: "",
+                category: "",
+                level: "Beginner",
+                duration: "",
+                price: 0,
+                shortDescription: "",
+                description: "",
+                requirements: "",
+                learningOutcomes: "",
+            },
     });
 
-    const onSubmit = async (data: CourseFormData) => {
+
+
+
+
+    const onSubmit = async (
+        data: CourseFormData
+    ) => {
+
+
         if (!session?.user) {
-            toast.error("Please login first.");
+
+            toast.error(
+                "Please login first"
+            );
+
             return;
+
         }
+
+
 
         const user = session.user;
 
+
+
         const courseData: Course = {
+
+
             title: data.title,
+
+
             thumbnail: data.thumbnail,
+
+
             category: data.category,
+
+
             level: data.level,
 
+
             duration: data.duration,
+
+
             price: Number(data.price),
 
-            shortDescription: data.shortDescription,
-            description: data.description,
 
-            requirements: data.requirements
-                .split("\n")
-                .map((item) => item.trim())
-                .filter(Boolean),
 
-            learningOutcomes: data.learningOutcomes
-                .split("\n")
-                .map((item) => item.trim())
-                .filter(Boolean),
+            shortDescription:
+                data.shortDescription,
+
+
+
+            description:
+                data.description,
+
+
+
+            requirements:
+                data.requirements
+                    .split("\n")
+                    .map(item => item.trim())
+                    .filter(Boolean),
+
+
+
+            learningOutcomes:
+                data.learningOutcomes
+                    .split("\n")
+                    .map(item => item.trim())
+                    .filter(Boolean),
+
+
 
             instructorId: user.id,
+
+
             instructorName: user.name,
+
+
             instructorEmail: user.email,
-            enrollmentCount: 0,
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
+
+
+            enrollmentCount:
+                course?.enrollmentCount || 0,
+
+
+            createdAt:
+                course?.createdAt ||
+                new Date().toISOString(),
+
+
+            updatedAt:
+                new Date().toISOString(),
+
         };
+
+
 
         let result;
 
+
+
         if (mode === "add") {
-            result = await createCourse(courseData);
-        } else {
+
+
+            result =
+                await createCourse(
+                    courseData
+                );
+
+
+        }
+        else {
+
+
             if (!course?._id) {
-                toast.error("Course ID not found.");
+
+                toast.error(
+                    "Course ID missing"
+                );
+
                 return;
+
             }
 
-            result = await updateCourse(
-                course._id,
-                courseData
-            );
+
+            result =
+                await updateCourse(
+                    course._id,
+                    courseData
+                );
+
         }
 
+
+
+
         if (result.success) {
-            toast.success(result.message);
+
+
+            toast.success(
+                result.message
+            );
+
 
             reset();
 
-            router.push("/dashboard/manage-courses");
-        } else {
-            toast.error(result.message);
+
+            router.push(
+                "/dashboard/manage-courses"
+            );
+
+
         }
+        else {
+
+
+            toast.error(
+                result.message
+            );
+
+        }
+
+
     };
 
+
+
+
+
     return (
-        <div className="mx-auto max-w-4xl rounded-2xl bg-white p-8 shadow">
-            <h2 className="mb-8 text-3xl font-bold">
-                {mode === "add"
-                    ? "Add New Course"
-                    : "Edit Course"}
+
+        <div className="
+            mx-auto
+            max-w-4xl
+            rounded-2xl
+            bg-white
+            p-8
+            shadow
+        ">
+
+
+            <h2 className="
+                mb-8
+                text-3xl
+                font-bold
+            ">
+
+                {
+                    mode === "add"
+                        ? "Add New Course"
+                        : "Edit Course"
+                }
+
             </h2>
 
+
+
             <form
-                onSubmit={handleSubmit(onSubmit)}
+                onSubmit={
+                    handleSubmit(onSubmit)
+                }
                 className="space-y-6"
             >
-                <input
-                    {...register("title")}
-                    placeholder="Course Title"
-                    className="w-full rounded-xl border p-3"
+
+
+
+                <InputField
+                    label="Course Title"
+                    error={errors.title?.message}
+                    register={
+                        register(
+                            "title",
+                            {
+                                required:
+                                    "Course title is required"
+                            }
+                        )
+                    }
                 />
 
-                <input
-                    {...register("thumbnail")}
-                    placeholder="Thumbnail URL"
-                    className="w-full rounded-xl border p-3"
+
+
+                <InputField
+                    label="Thumbnail URL"
+                    error={errors.thumbnail?.message}
+                    register={
+                        register(
+                            "thumbnail",
+                            {
+                                required:
+                                    "Thumbnail URL is required"
+                            }
+                        )
+                    }
                 />
 
-                <select
-                    {...register("category", {
-                        required: "Category is required",
-                    })}
-                    className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none focus:border-indigo-600"
-                >
-                    <option value="">Select Category</option>
 
-                    {categories.map((category) => (
-                        <option key={category} value={category}>
-                            {category}
+
+
+
+                <div>
+
+                    <select
+
+                        {...register(
+                            "category",
+                            {
+                                required:
+                                    "Category is required"
+                            }
+                        )}
+
+                        className="
+                        w-full
+                        rounded-xl
+                        border
+                        p-3
+                        "
+                    >
+
+                        <option value="">
+                            Select Category
                         </option>
-                    ))}
-                </select>
 
-                <select
-                    {...register("level")}
-                    className="w-full rounded-xl border p-3"
-                >
-                    <option value="Beginner">
-                        Beginner
-                    </option>
 
-                    <option value="Intermediate">
-                        Intermediate
-                    </option>
+                        {
+                            categories.map(
+                                item => (
+                                    <option
+                                        key={item}
+                                        value={item}
+                                    >
+                                        {item}
+                                    </option>
+                                )
+                            )
+                        }
 
-                    <option value="Advanced">
-                        Advanced
-                    </option>
-                </select>
+                    </select>
 
-                <input
-                    {...register("duration")}
-                    placeholder="Duration"
-                    className="w-full rounded-xl border p-3"
+
+                    <Error text={
+                        errors.category?.message
+                    } />
+
+                </div>
+
+
+
+
+
+                <div>
+
+                    <select
+
+                        {...register(
+                            "level",
+                            {
+                                required:
+                                    "Level is required"
+                            }
+                        )}
+
+                        className="
+                    w-full
+                    rounded-xl
+                    border
+                    p-3
+                    "
+                    >
+
+                        <option value="">
+                            Select Level
+                        </option>
+
+                        <option value="Beginner">
+                            Beginner
+                        </option>
+
+                        <option value="Intermediate">
+                            Intermediate
+                        </option>
+
+                        <option value="Advanced">
+                            Advanced
+                        </option>
+
+
+                    </select>
+
+
+                    <Error text={
+                        errors.level?.message
+                    } />
+
+
+                </div>
+
+
+
+
+
+
+                <InputField
+                    label="Duration"
+                    error={errors.duration?.message}
+                    register={
+                        register(
+                            "duration",
+                            {
+                                required:
+                                    "Duration is required"
+                            }
+                        )
+                    }
                 />
 
-                <input
-                    type="number"
-                    {...register("price")}
-                    placeholder="Price"
-                    className="w-full rounded-xl border p-3"
-                />
 
-                <textarea
-                    {...register("shortDescription")}
+
+
+
+                <div>
+
+                    <input
+                        type="number"
+                        {...register("price", {
+                            valueAsNumber: true,
+                            required: "Price is required",
+                            min: {
+                                value: 0,
+                                message: "Price cannot be negative",
+                            },
+                        })}
+                    />
+
+
+                    <Error text={
+                        errors.price?.message
+                    } />
+
+
+                </div>
+
+
+
+
+
+
+                <TextArea
+                    name="shortDescription"
                     placeholder="Short Description"
-                    className="h-24 w-full rounded-xl border p-3"
+                    register={register(
+                        "shortDescription",
+                        {
+                            required:
+                                "Short description required"
+                        }
+                    )}
+                    error={
+                        errors.shortDescription?.message
+                    }
                 />
 
-                <textarea
-                    {...register("description")}
+
+
+
+
+                <TextArea
+                    name="description"
                     placeholder="Full Description"
-                    className="h-40 w-full rounded-xl border p-3"
+                    register={register(
+                        "description",
+                        {
+                            required:
+                                "Description required",
+
+                            minLength: {
+                                value: 20,
+                                message:
+                                    "Minimum 20 characters"
+                            }
+                        }
+                    )}
+                    error={
+                        errors.description?.message
+                    }
                 />
 
-                <textarea
-                    {...register("requirements")}
+
+
+
+
+
+                <TextArea
+                    name="requirements"
                     placeholder="One requirement per line"
-                    className="h-32 w-full rounded-xl border p-3"
+                    register={register(
+                        "requirements",
+                        {
+                            required:
+                                "Requirements required"
+                        }
+                    )}
+                    error={
+                        errors.requirements?.message
+                    }
                 />
 
-                <textarea
-                    {...register("learningOutcomes")}
+
+
+
+
+
+                <TextArea
+                    name="learningOutcomes"
                     placeholder="One learning outcome per line"
-                    className="h-32 w-full rounded-xl border p-3"
+                    register={register(
+                        "learningOutcomes",
+                        {
+                            required:
+                                "Learning outcomes required"
+                        }
+                    )}
+                    error={
+                        errors.learningOutcomes?.message
+                    }
                 />
+
+
+
+
 
                 <button
-                    className="rounded-xl bg-indigo-600 px-8 py-3 font-semibold text-white"
+                    type="submit"
+                    className="
+                    rounded-xl
+                    bg-indigo-600
+                    px-8
+                    py-3
+                    font-semibold
+                    text-white
+                    hover:bg-indigo-700
+                    "
                 >
-                    {mode === "add"
-                        ? "Add Course"
-                        : "Update Course"}
+
+                    {
+                        mode === "add"
+                            ? "Add Course"
+                            : "Update Course"
+                    }
+
+
                 </button>
+
+
             </form>
+
+
         </div>
+
     );
+
 };
+
+
+
+
+const Error = ({
+    text
+}: {
+    text?: string
+}) => (
+    <p className="
+        mt-1
+        text-sm
+        text-red-500
+    ">
+        {text}
+    </p>
+);
+
+
+
+
+
+const InputField = ({
+    label,
+    register,
+    error
+}: any) => (
+
+    <div>
+
+        <input
+
+            {...register}
+
+            placeholder={label}
+
+            className="
+        w-full
+        rounded-xl
+        border
+        p-3
+        "
+
+        />
+
+        <Error text={error} />
+
+    </div>
+
+);
+
+
+
+
+
+const TextArea = ({
+    placeholder,
+    register,
+    error
+}: any) => (
+
+    <div>
+
+        <textarea
+
+            {...register}
+
+            placeholder={placeholder}
+
+            className="
+        h-32
+        w-full
+        rounded-xl
+        border
+        p-3
+        "
+
+        />
+
+
+        <Error text={error} />
+
+
+    </div>
+
+);
+
+
 
 export default CourseForm;

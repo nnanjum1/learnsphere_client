@@ -1,27 +1,23 @@
-import { redirect } from "next/navigation";
-
+import { ReactNode } from "react";
 import { getSession } from "@/app/lib/get-session";
 import DashboardLayout from "@/app/components/dashboard/DashboardLayout";
 
 export default async function Layout({
     children,
 }: {
-    children: React.ReactNode;
+    children: ReactNode;
 }) {
 
     const session = await getSession();
 
-    console.log("DASHBOARD SESSION:", session);
-
     if (!session?.user) {
-        redirect("/login");
+        return null;
     }
 
-    console.log("USER ROLE:", session.user.role);
 
     return (
         <DashboardLayout
-            role={session.user.role as "student" | "instructor"}
+            role={session.user.role}
             name={session.user.name}
         >
             {children}

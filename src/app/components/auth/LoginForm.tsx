@@ -41,25 +41,31 @@ const LoginForm = () => {
         setLoading(true);
 
         try {
-            await authClient.signIn.email(
-                {
+            const result =
+                await authClient.signIn.email({
                     email: data.email,
                     password: data.password,
-                },
-                {
-                    onSuccess: async () => {
-                        toast.success("Login successful");
+                });
 
-                        router.push("/dashboard");
 
-                        router.refresh();
-                    },
+            if (result.error) {
 
-                    onError: (ctx) => {
-                        toast.error(ctx.error.message);
-                    },
-                }
+                toast.error(
+                    result.error.message
+                );
+
+                return;
+            }
+
+
+            toast.success(
+                "Login successful"
             );
+
+
+            router.push("/dashboard");
+
+            router.refresh();
 
         } catch (error) {
             toast.error("Something went wrong");
