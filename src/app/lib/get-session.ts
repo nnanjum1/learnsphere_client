@@ -11,9 +11,6 @@ export async function getSession() {
         .join("; ");
 
 
-    console.log("SERVER COOKIES:", cookieHeader);
-
-
     const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/auth/get-session`,
         {
@@ -27,8 +24,7 @@ export async function getSession() {
 
     const data = await res.json();
 
-
-    console.log("BETTER AUTH RESPONSE:", data);
+    console.log("SESSION DATA:", data);
 
 
     return data;
