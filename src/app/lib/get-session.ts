@@ -19,6 +19,7 @@ export async function getSession() {
             headers: {
                 Cookie: cookieHeader,
             },
+            credentials: "include",
             cache: "no-store",
         }
     );
@@ -35,5 +36,11 @@ export async function getSession() {
     }
 
 
-    return await res.json();
+    const session = await res.json();
+
+
+    console.log("SERVER SESSION:", session);
+
+
+    return session;
 }

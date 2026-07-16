@@ -2,6 +2,6 @@ import "better-auth";
 
 declare module "better-auth" {
     interface User {
-        role: "student" | "instructor" | "admin";
+        role: "student" | "instructor";
     }
 }
