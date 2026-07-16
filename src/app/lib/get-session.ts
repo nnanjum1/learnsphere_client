@@ -5,42 +5,31 @@ export async function getSession() {
 
     const cookieStore = await cookies();
 
-
     const cookieHeader = cookieStore
         .getAll()
         .map(({ name, value }) => `${name}=${value}`)
         .join("; ");
 
 
+    console.log("SERVER COOKIES:", cookieHeader);
+
+
     const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/auth/get-session`,
         {
-            method: "GET",
             headers: {
                 Cookie: cookieHeader,
             },
-            credentials: "include",
             cache: "no-store",
         }
     );
 
 
-    if (!res.ok) {
-
-        console.log(
-            "Session request failed:",
-            res.status
-        );
-
-        return null;
-    }
+    const data = await res.json();
 
 
-    const session = await res.json();
+    console.log("BETTER AUTH RESPONSE:", data);
 
 
-    console.log("SERVER SESSION:", session);
-
-
-    return session;
+    return data;
 }
